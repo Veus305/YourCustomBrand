@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Custom Cloth Brand</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            margin: 0; 
+            padding: 0; 
+            background: #f0f8ff; 
+            color: #333; 
+            position: relative;
+        }
+        header { 
+            text-align: center; 
+            padding: 20px; 
+            background: #4CAF50; 
+            color: white; 
+        }
+        .logo { max-width: 70px; min-height: 50px; border-radius: 60px; }
+        nav ul { 
+            list-style: none; 
+            padding: 0; 
+            display: flex; 
+            justify-content: center; 
+            background: #333; 
+            margin: 0;
+        }
+        nav li { margin: 0 15px; position: relative; }
+        nav a { color: white; text-decoration: none; padding: 10px; display: block; }
+        .dropdown-content { 
+            display: none; 
+            position: absolute; 
+            background: #333; 
+            min-width: 160px; 
+            z-index: 1; 
+            transition: opacity 0.3s; 
+        }
+        .dropdown-content a { padding: 12px 16px; }
+        .dropdown:hover .dropdown-content { display: block; opacity: 1; }
+        section { padding: 20px; text-align: center; }
+        .gallery { display: flex; flex-wrap: wrap; justify-content: center; }
+        .gallery img { 
+            width: 200px; 
+            margin: 10px; 
+            border-radius: 10px; 
+            transition: transform 0.3s, box-shadow 0.3s; 
+        }
+        .hover-effect:hover { 
+            transform: scale(1.1); 
+            box-shadow: 0 0 20px rgba(0,0,0,0.3); 
+        }
+        .btn { 
+            background: #4CAF50; 
+            color: white; 
+            padding: 10px 20px; 
+            border: none; 
+            cursor: pointer; 
+            transition: background 0.3s; 
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn:hover { background: #45a049; }
+        footer { background: #333; color: white; padding: 10px; text-align: center; }
+
+        /* Form Styles */
+        form { max-width: 600px; margin: 0 auto; text-align: left; }
+        label { display: block; margin: 10px 0 5px; }
+        input, textarea, select { width: 100%; padding: 8px; margin-bottom: 10px; box-sizing: border-box; }
+        textarea { height: 100px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background: #f2f2f2; }
+
+        /* Preloader */
+        #preloader { 
+            position: fixed; 
+            top: 0; left: 0; 
+            width: 100%; height: 100%; 
+            background: #fff; 
+            z-index: 9999; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+        }
+        .loader { font-size: 20px; animation: pulse 1s infinite; }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+
+        /* Fireworks */
+        #fireworks { 
+            position: fixed; 
+            top: 0; left: 0; 
+            width: 100%; height: 100%; 
+            pointer-events: none; 
+            z-index: -1; 
+            opacity: 0.5; 
+        }
+
+        .whatsapp-btn {
+            background: #25D366 !important;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin: 10px 0;
+        }
+        .whatsapp-btn img { width: 24px; height: 24px; }
+
+        /* Responsive */
+        @media (max-width: 768px) { 
+            .gallery img { width: 100%; } 
+            nav ul { flex-direction: column; } 
+        }
+    </style>
+</head>
+<body>
+    <!-- Preloader -->
+    <div id="preloader">
+        <div class="loader">Loading Splendid Designs...</div>
+    </div>
+
+    <!-- Continuous Fireworks Canvas -->
+    <canvas id="fireworks"></canvas>
+
+    <header>
+        <img src="download.jpg" alt="Your Brand Logo" class="logo">
+        <h1>Welcome to Your Custom Cloth Brand</h1>
+        <p>Customize your clothes with splendid art at affordable prices!</p>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="#shirts">Shirts</a></li>
+            <li><a href="#tshirts">T-Shirts</a></li>
+            <li class="dropdown">
+                <a href="#customize">Customize Now</a>
+                <div class="dropdown-content">
+                    <a href="#provide-own">Provide Your Own Cloth</a>
+                    <a href="#buy-from-us">Buy From Our Store</a>
+                </div>
+            </li>
+            <li><a href="#contact">Contact Us</a></li>
+        </ul>
+    </nav>
+
+    <section id="shirts">
+        <h2>Customized Shirts</h2>
+        <div class="gallery">
+            <img src="img1S.jfif" alt="Custom Shirt 1" class="hover-effect">
+            <img src="IMG10SS.jfif" alt="Custom Shirt 2" class="hover-effect">
+            <!-- Add your images here -->
+        </div>
+    </section>
+
+    <section id="tshirts">
+        <h2>Customized T-Shirts</h2>
+        <div class="gallery">
+            <img src="img7S.jfif" alt="Custom T-Shirt 1" class="hover-effect">
+            <img src="img5S.jfif" alt="Custom T-Shirt 2" class="hover-effect">
+            <img src="IMG3SL.jfif" alt="Hawaiian-Style Customized Cloth" class="hover-effect">
+            <!-- Add your images here -->
+        </div>
+    </section>
+
+    <section id="customize">
+        <h2>Customization Options</h2>
+        <form id="customForm">
+            <label for="name">Your Name:</label>
+            <input type="text" id="name" required>
+
+            <label>Option:</label>
+            <input type="radio" id="buy" name="option" value="Buy from store" required>
+            <label for="buy">Buy from Store</label><br>
+            <input type="radio" id="provide" name="option" value="Provide own">
+            <label for="provide">Provide Own Cloth</label>
+
+            <label for="color">Color of Cloth:</label>
+            <input type="text" id="color" placeholder="e.g., red, navy blue" required>
+
+            <label for="idea">Image Idea / Design Description:</label>
+            <textarea id="idea" required placeholder="Describe the art, pattern, text, Hawaiian style, etc. you want..."></textarea>
+
+            <label for="ideaImage">Upload Image Reference (Optional):</label>
+            <input type="file" id="ideaImage" accept="image/*">
+
+            <label for="email">Your Email:</label>
+            <input type="email" id="email" required>
+
+            <label for="location">Your Location:</label>
+            <input type="text" id="location" placeholder="e.g., Nairobi, Kenya" required>
+
+            <button type="submit" class="btn hover-effect">Submit Request</button>
+        </form>
+
+        <div style="margin-top: 30px;">
+            <p><strong>Prefer a quick personalized chat?</strong> Reach me directly on WhatsApp — we can discuss your design ideas, colors, pricing, and next steps in real time!</p>
+            <a href="https://wa.me/254791104910?text=Hi!%20I'm%20interested%20in%20customizing%20clothes%20with%20your%20splendid%20art.%20Can%20we%20chat%20about%20my%20idea?" 
+               target="_blank" 
+               class="btn whatsapp-btn hover-effect">
+                <img src="whatsapp.jpeg" alt="WhatsApp">
+                Chat on WhatsApp Now
+            </a>
+        </div>
+    </section>
+
+    <!-- Admin Panel (hidden by default) -->
+    <section id="admin" style="display: none;">
+        <h2>Admin Panel - User Submissions</h2>
+        <table id="userData">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Option</th>
+                    <th>Color</th>
+                    <th>Idea</th>
+                    <th>Image Uploaded?</th>
+                    <th>Email</th>
+                    <th>Location</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </section>
+
+    <footer id="contact">
+        <h2>How to Reach Us</h2>
+        <p>Email: yourcustombrand@gmail.com</p>
+        <p>Phone: +254 791 104 910</p>
+        <p>Address: Nairobi, Kenya</p>
+        <p>Social: @yourbrand on X / Instagram</p>
+        <p style="margin-top: 15px;">
+            <strong>Fast Personalized Support:</strong> 
+            <a href="https://wa.me/254791104910?text=Hello!%20I'm%20reaching%20out%20from%20your%20website%20about%20custom%20clothes." 
+               target="_blank" 
+               style="color: #25D366; font-weight: bold; text-decoration: none;">
+               Message on WhatsApp
+            </a>
+        </p>
+        <p><a href="#" id="adminLogin" style="color: #aaa; font-size: 0.9em;">Admin Login</a></p>
+    </footer>
+
+    <script>
+        // Preloader
+        window.addEventListener('load', function() {
+            const images = document.querySelectorAll('img');
+            let loaded = 0;
+            images.forEach(img => {
+                if (img.complete) loaded++;
+                else img.onload = () => { loaded++; if (loaded === images.length) hidePreloader(); };
+            });
+            if (loaded === images.length) hidePreloader();
+        });
+
+        function hidePreloader() {
+            document.getElementById('preloader').style.display = 'none';
+            launchFireworks();
+        }
+
+        // Continuous Fireworks
+        function launchFireworks() {
+            const canvas = document.getElementById('fireworks');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            class Particle {
+                constructor(x, y, color) {
+                    this.x = x;
+                    this.y = y;
+                    this.color = color;
+                    this.velocity = { x: Math.random() * 6 - 3, y: Math.random() * 6 - 3 };
+                    this.alpha = 1;
+                }
+                draw() {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, 2.5, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(${this.color}, ${this.alpha})`;
+                    ctx.fill();
+                }
+                update() {
+                    this.x += this.velocity.x;
+                    this.y += this.velocity.y;
+                    this.alpha -= 0.008;
+                }
+            }
+
+            let particles = [];
+
+            function explode(x, y) {
+                const colors = ['255,69,0', '255,215,0', '0,191,255', '50,205,50', '255,20,147'];
+                for (let i = 0; i < 60; i++) {
+                    particles.push(new Particle(x, y, colors[Math.floor(Math.random() * colors.length)]));
+                }
+            }
+
+            function animate() {
+                requestAnimationFrame(animate);
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                particles = particles.filter(p => {
+                    if (p.alpha > 0) {
+                        p.update();
+                        p.draw();
+                        return true;
+                    }
+                    return false;
+                });
+            }
+            animate();
+
+            // Continuous random explosions
+            setInterval(() => {
+                explode(Math.random() * canvas.width, Math.random() * canvas.height * 0.7);
+            }, 1800);
+        }
+
+        // Form Submission
+        const form = document.getElementById('customForm');
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const name = document.getElementById('name').value.trim();
+            const option = document.querySelector('input[name="option"]:checked')?.value || 'Not specified';
+            const color = document.getElementById('color').value.trim();
+            const idea = document.getElementById('idea').value.trim();
+            const ideaImage = document.getElementById('ideaImage').files.length > 0 ? 'Yes' : 'No';
+            const email = document.getElementById('email').value.trim();
+            const location = document.getElementById('location').value.trim();
+
+            // Basic email format check
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                alert('Please enter a valid email address.');
+                return;
+            }
+
+            // Save to localStorage
+            let submissions = JSON.parse(localStorage.getItem('submissions')) || [];
+            submissions.push({ name, option, color, idea, ideaImage, email, location });
+            localStorage.setItem('submissions', JSON.stringify(submissions));
+
+            alert('Thank you! Your customization request has been submitted.');
+
+            // Show personalized WhatsApp link after submission
+            const waDiv = document.createElement('div');
+            waDiv.style.marginTop = '20px';
+            waDiv.innerHTML = `
+                <p style="font-weight: bold; color: #25D366;">Continue with personalized discussion on WhatsApp:</p>
+                <a href="https://wa.me/254791104910?text=Hi!%20My%20name%20is%20${encodeURIComponent(name)}.%20I%20submitted%20a%20request%20(${encodeURIComponent(option)}%20-%20${encodeURIComponent(color)}).%20${encodeURIComponent(idea.substring(0,100))}...%20Let's%20discuss%20details!" 
+                   target="_blank" 
+                   class="btn whatsapp-btn hover-effect">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
+                    Open WhatsApp Chat
+                </a>
+            `;
+            form.parentNode.insertBefore(waDiv, form.nextSibling);
+
+            form.reset();
+        });
+
+        // Admin Login & Data Display
+        document.getElementById('adminLogin').addEventListener('click', function(e) {
+            e.preventDefault();
+            const password = prompt('Enter admin password:');
+            if (password === 'admin123') {
+                document.getElementById('admin').style.display = 'block';
+                loadAdminData();
+            } else {
+                alert('Incorrect password.');
+            }
+        });
+
+        function loadAdminData() {
+            const tbody = document.querySelector('#userData tbody');
+            tbody.innerHTML = '';
+            const submissions = JSON.parse(localStorage.getItem('submissions')) || [];
+            submissions.forEach(sub => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${sub.name}</td>
+                    <td>${sub.option}</td>
+                    <td>${sub.color}</td>
+                    <td>${sub.idea.substring(0, 80)}${sub.idea.length > 80 ? '...' : ''}</td>
+                    <td>${sub.ideaImage}</td>
+                    <td>${sub.email}</td>
+                    <td>${sub.location}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // Optional: Clear localStorage for testing (uncomment if needed)
+        // localStorage.removeItem('submissions');
+    </script>
+</body>
+</html>
