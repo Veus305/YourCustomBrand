@@ -125,8 +125,8 @@
 
     <header>
         <img src="download.jpg" alt="Your Brand Logo" class="logo">
-        <h1>Art Your Taste.</h1>
-        <p>Customize your clothes with Splendid art at affordable prices!</p>
+        <h1>Art Your Taste</h1>
+        <p>Customize your clothes with splendid art at affordable prices!</p>
     </header>
 
     <nav>
@@ -149,7 +149,6 @@
         <div class="gallery">
             <img src="img1S.jfif" alt="Custom Shirt 1" class="hover-effect">
             <img src="IMG10SS.jfif" alt="Custom Shirt 2" class="hover-effect">
-            <!-- Add your images here -->
         </div>
     </section>
 
@@ -159,15 +158,14 @@
             <img src="IMG7S.jfif" alt="Custom T-Shirt 1" class="hover-effect">
             <img src="IMG5S.jfif" alt="Custom T-Shirt 2" class="hover-effect">
             <img src="IMG3SL.jfif" alt="Hawaiian-Style Customized Cloth" class="hover-effect">
-            <!-- Add your images here -->
         </div>
     </section>
 
     <section id="customize">
         <h2>Customization Options</h2>
-        <form id="customForm">
+        <form id="customForm" method="POST">
             <label for="name">Your Name:</label>
-            <input type="text" id="name" required>
+            <input type="text" id="name" name="name" required>
 
             <label>Option:</label>
             <input type="radio" id="buy" name="option" value="Buy from store" required>
@@ -176,19 +174,19 @@
             <label for="provide">Provide Own Cloth</label>
 
             <label for="color">Color of Cloth:</label>
-            <input type="text" id="color" placeholder="e.g., red, navy blue" required>
+            <input type="text" id="color" name="color" placeholder="e.g., red, navy blue" required>
 
             <label for="idea">Image Idea / Design Description:</label>
-            <textarea id="idea" required placeholder="Describe the art, pattern, text, Hawaiian style, etc. you want..."></textarea>
+            <textarea id="idea" name="idea" required placeholder="Describe the art, pattern, text, Hawaiian style, etc. you want..."></textarea>
 
             <label for="ideaImage">Upload Image Reference (Optional):</label>
-            <input type="file" id="ideaImage" accept="image/*">
+            <input type="file" id="ideaImage" name="ideaImage" accept="image/*">
 
             <label for="email">Your Email:</label>
-            <input type="email" id="email" required>
+            <input type="email" id="email" name="email" required>
 
             <label for="location">Your Location:</label>
-            <input type="text" id="location" placeholder="e.g., Nairobi, Kenya" required>
+            <input type="text" id="location" name="location" placeholder="e.g., Nairobi, Kenya" required>
 
             <button type="submit" class="btn hover-effect">Submit Request</button>
         </form>
@@ -207,7 +205,11 @@
     <!-- Admin Panel (hidden by default) -->
     <section id="admin" style="display: none;">
         <h2>Admin Panel - User Submissions</h2>
-        <table id="userData">
+        <p style="color: #555; font-style: italic;">
+            Submissions are now saved directly in your Google Sheet.<br>
+            Open your Google Sheet to view all entries (new rows appear automatically).
+        </p>
+        <table id="userData" style="display: none;">
             <thead>
                 <tr>
                     <th>Name</th>
@@ -257,7 +259,7 @@
             launchFireworks();
         }
 
-        // Continuous Fireworks
+        // Continuous Fireworks (unchanged)
         function launchFireworks() {
             const canvas = document.getElementById('fireworks');
             const ctx = canvas.getContext('2d');
@@ -308,92 +310,73 @@
             }
             animate();
 
-            // Continuous random explosions
             setInterval(() => {
                 explode(Math.random() * canvas.width, Math.random() * canvas.height * 0.7);
             }, 1800);
         }
 
-        // Form Submission
+        // Form Submission → Google Sheets
         const form = document.getElementById('customForm');
-        form.addEventListener('submit', function(e) {
+        form.addEventListener('submit', async function(e) {
             e.preventDefault();
 
-            const name = document.getElementById('name').value.trim();
-            const option = document.querySelector('input[name="option"]:checked')?.value || 'Not specified';
-            const color = document.getElementById('color').value.trim();
-            const idea = document.getElementById('idea').value.trim();
-            const ideaImage = document.getElementById('ideaImage').files.length > 0 ? 'Yes' : 'No';
-            const email = document.getElementById('email').value.trim();
-            const location = document.getElementById('location').value.trim();
+            const formData = new FormData(form);
 
-            // Basic email format check
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailRegex.test(email)) {
-                alert('Please enter a valid email address.');
-                return;
+            // Add image presence flag (file itself cannot be sent directly without backend)
+            const hasImage = document.getElementById('ideaImage').files.length > 0;
+            formData.append('imageUploaded', hasImage ? 'Yes' : 'No');
+
+            try {
+                const response = await fetch('https://script.google.com/macros/s/AKfycby70Wz25BF14HhXV3SbHbAyk07awWz0tuxeD43ffzFWTlit6cHFOKbbR_LkQ2huAIvL/exec', {  // ← PASTE YOUR DEPLOYED GOOGLE APPS SCRIPT URL HERE
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+
+                if (result.result === 'success') {
+                    alert('Thank you! Your customization request has been saved.');
+
+                    // Show personalized WhatsApp prompt
+                    const name = formData.get('name');
+                    const option = formData.get('option') || 'Not specified';
+                    const color = formData.get('color');
+                    const idea = formData.get('idea');
+
+                    const waDiv = document.createElement('div');
+                    waDiv.style.marginTop = '20px';
+                    waDiv.innerHTML = `
+                        <p style="font-weight: bold; color: #25D366;">Continue with personalized discussion on WhatsApp:</p>
+                        <a href="https://wa.me/254791104910?text=Hi!%20My%20name%20is%20${encodeURIComponent(name)}.%20I%20submitted%20a%20request%20(${encodeURIComponent(option)}%20-%20${encodeURIComponent(color)}).%20${encodeURIComponent(idea.substring(0,100))}...%20Let's%20discuss%20details!" 
+                           target="_blank" 
+                           class="btn whatsapp-btn hover-effect">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
+                            Open WhatsApp Chat
+                        </a>
+                    `;
+                    form.parentNode.insertBefore(waDiv, form.nextSibling);
+
+                    form.reset();
+                } else {
+                    alert('Error from server: ' + (result.message || 'Unknown issue'));
+                }
+            } catch (err) {
+                console.error(err);
+                alert('Could not connect to the submission service. Please check your internet or try again later.');
             }
-
-            // Save to localStorage
-            let submissions = JSON.parse(localStorage.getItem('submissions')) || [];
-            submissions.push({ name, option, color, idea, ideaImage, email, location });
-            localStorage.setItem('submissions', JSON.stringify(submissions));
-
-            alert('Thank you! Your customization request has been submitted.');
-
-            // Show personalized WhatsApp link after submission
-            const waDiv = document.createElement('div');
-            waDiv.style.marginTop = '20px';
-            waDiv.innerHTML = `
-                <p style="font-weight: bold; color: #25D366;">Continue with personalized discussion on WhatsApp:</p>
-                <a href="https://wa.me/254791104910?text=Hi!%20My%20name%20is%20${encodeURIComponent(name)}.%20I%20submitted%20a%20request%20(${encodeURIComponent(option)}%20-%20${encodeURIComponent(color)}).%20${encodeURIComponent(idea.substring(0,100))}...%20Let's%20discuss%20details!" 
-                   target="_blank" 
-                   class="btn whatsapp-btn hover-effect">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
-                    Open WhatsApp Chat
-                </a>
-            `;
-            form.parentNode.insertBefore(waDiv, form.nextSibling);
-
-            form.reset();
         });
 
-        // Admin Login & Data Display
+        // Admin Login
         document.getElementById('adminLogin').addEventListener('click', function(e) {
             e.preventDefault();
             const password = prompt('Enter admin password:');
             if (password === 'admin123') {
                 document.getElementById('admin').style.display = 'block';
-                loadAdminData();
+                alert('All submissions are now saved in your Google Sheet!\n\nOpen your Google Sheet and check the rows.\nLocal table view is disabled in this version.');
             } else {
                 alert('Incorrect password.');
             }
         });
-
-        function loadAdminData() {
-            const tbody = document.querySelector('#userData tbody');
-            tbody.innerHTML = '';
-            const submissions = JSON.parse(localStorage.getItem('submissions')) || [];
-            submissions.forEach(sub => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${sub.name}</td>
-                    <td>${sub.option}</td>
-                    <td>${sub.color}</td>
-                    <td>${sub.idea.substring(0, 80)}${sub.idea.length > 80 ? '...' : ''}</td>
-                    <td>${sub.ideaImage}</td>
-                    <td>${sub.email}</td>
-                    <td>${sub.location}</td>
-                `;
-                tbody.appendChild(row);
-            });
-        }
-
-        // Optional: Clear localStorage for testing (uncomment if needed)
-        // localStorage.removeItem('submissions');
     </script>
 </body>
-
 </html>
-
-
